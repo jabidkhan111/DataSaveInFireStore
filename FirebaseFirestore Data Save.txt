@@ -1,0 +1,49 @@
+// Java data in firebasefirestore
+        binding.save.setOnClickListener(v -> {
+		
+            FirebaseFirestore db=FirebaseFirestore.getInstance();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("title",binding.title.getText().toString());
+            data.put("description",binding.description.getText().toString());
+
+            db.collection("shayari").document("latest").set(data)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Toast.makeText(AddShayariActivity.this, "Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            Toast.makeText(AddShayariActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        }
+					});
+				});
+			}
+		}
+		
+
+
+
+// Kotlin data in firebasefirestore
+		
+		var db: FirebaseFirestore? = null
+        db = FirebaseFirestore.getInstance()
+
+        val user: MutableMap<String, Any> = HashMap()
+        user["first Name"] = binding.firstName.getText().toString()
+        user["last Name"] = binding.lastName.getText().toString()
+        user["born"] = binding.born.getText().toString()
+
+
+        db!!.collection("users").document()
+            .set(user).addOnCompleteListener(OnCompleteListener<Void?> { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, "Saved...", Toast.LENGTH_SHORT).show()
+                }
+            }).addOnCanceledListener(OnCanceledListener {
+                Toast.makeText(this,"Failed...",Toast.LENGTH_SHORT).show()
+            })
